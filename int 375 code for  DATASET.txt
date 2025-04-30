@@ -1,0 +1,83 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("C:\\Users\\LENOVO\\Downloads\Ranking of country.csv")
+print(df)
+d=df.head()
+print(d)
+df.isnull().sum()
+df.dropna(inplace=True)
+print("Duplicate rows:", df.duplicated().sum())
+df.drop_duplicates(inplace=True)
+print(df.info())
+plt.figure(figsize=(14, 10))
+sns.heatmap(df.corr(numeric_only=True), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title("Correlation Heatmap")
+plt.show()
+
+plt.figure(figsize=(18, 12))
+
+plt.subplot(3, 3, 1)
+sns.boxplot(x=df['Economy (GDP per Capita)'], color='skyblue')
+plt.title('Boxplot of Economy (GDP per Capita)')
+
+plt.subplot(3, 3, 2)
+sns.boxplot(x=df['Family'], color='skyblue')
+plt.title('Boxplot of Family')
+
+plt.subplot(3, 3, 3)
+sns.boxplot(x=df['Health (Life Expectancy)'], color='skyblue')
+plt.title('Boxplot of Health (Life Expectancy)')
+
+plt.subplot(3, 3, 4)
+sns.boxplot(x=df['Freedom'], color='skyblue')
+plt.title('Boxplot of Freedom')
+
+plt.subplot(3, 3, 5)
+sns.boxplot(x=df['Trust (Government Corruption)'], color='skyblue')
+plt.title('Boxplot of Trust (Government Corruption)')
+
+plt.subplot(3, 3, 6)
+sns.boxplot(x=df['Generosity'], color='skyblue')
+plt.title('Boxplot of Generosity')
+
+plt.subplot(3, 3, 7)
+sns.boxplot(x=df['Dystopia Residual'], color='skyblue')
+plt.title('Boxplot of Dystopia Residual')
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(12, 6))
+sns.lineplot(x='Happiness Rank', y='Happiness Score', data=df, marker='D')
+plt.title("Happiness Score by Rank")
+plt.xlabel("Rank")
+plt.ylabel("Score")
+plt.show()
+
+top10 = df.sort_values(by="Happiness Score", ascending=False).head(10)
+plt.figure(figsize=(10, 6))
+sns.barplot(x="Happiness Score", y="Country", data=top10, palette="viridis")
+plt.title("Top 10 Happiest Countries")
+plt.xlabel("Happiness Score")
+plt.ylabel("Country")
+plt.show()
+
+top10_economy = df.sort_values(by="Economy (GDP per Capita)", ascending=False).head(10)
+plt.figure(figsize=(10, 6))
+sns.barplot(x="Country", y="Economy (GDP per Capita)", data=top10_economy, palette="coolwarm")
+plt.xticks(rotation=45)
+plt.title("Top 10 Economies (GDP per Capita)")
+plt.show()
+
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x="Freedom", y="Happiness Score", data=df, hue="Region")
+plt.title("Freedom vs Happiness Score")
+plt.show()
+
+sns.pairplot(df[['Economy (GDP per Capita)', 'Family', 'Health (Life Expectancy)',
+                 'Freedom', 'Trust (Government Corruption)', 'Generosity',
+                 'Dystopia Residual', 'Happiness Score']])
+plt.suptitle("Pair Plot of Key Indicators", y=1.02)
+plt.show()
